@@ -67,7 +67,7 @@ for phrase in ['before and after','create a greeting card from the message','how
 if not blog.select_one('.editorial-meta'):
     errors.append('blog.html missing editorial attribution')
 # Keep policy, contact and parent-company utility pages free of ad requests.
-for filename in ['contact.html','privacy.html','terms.html','aa-group.html']:
+for filename in ['contact.html','privacy.html','terms.html','aa-group.html','about.html']:
     if 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js' in (ROOT/filename).read_text(encoding='utf-8'):
         errors.append(f'{filename}: advertising loader should not run on this utility/trust page')
 # Privacy policy has been revised to explain browser storage and advertising separately.

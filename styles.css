@@ -5308,3 +5308,25 @@ a.button,
   .drone-show-stage .drone-halo { animation: none !important; will-change: auto !important; }
   .drone-show-stage .drone-unit { opacity: 1 !important; transform: none !important; }
 }
+
+/* Viral Card Studio deep-link button inside wish guide samples */
+.wish-studio-inline {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 36%, transparent);
+  color: var(--accent) !important;
+  text-decoration: none !important;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.wish-studio-inline:hover {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  border-color: var(--accent);
+}
