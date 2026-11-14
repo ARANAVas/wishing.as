@@ -1,2 +1,2 @@
-WishingASR v66.1 - Chairman Profile Link & Responsive Polish
-Build optimization: 66.1 profile link, responsive card and mobile navigation safeguards
+WishingASR v67.1 - Drone Show Performance & Visual Polish
+Build optimization: adaptive drone budgets, reduced SVG filter/animation overhead, tab visibility pausing, starfield depth and responsive caption safeguards

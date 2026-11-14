@@ -205,7 +205,14 @@ function renderOccasionDroneShow(id){
  if(id!=='republicday' && id!=='independenceday'){for(let i=0;i<6;i++){const a=i*Math.PI/3;add(400+Math.cos(a)*220,220+Math.sin(a)*165);}}
  const isMobile=window.matchMedia('(max-width:600px)').matches;
  const isTablet=window.matchMedia('(max-width:1000px)').matches;
- const limit=isMobile?20:(isTablet?34:52);
+ // Respect battery/data constraints when the browser exposes them. Defaults preserve
+ // the existing point counts on browsers that do not expose device capability hints.
+ const deviceInfo=typeof navigator!=='undefined'?navigator:{};
+ const connection=deviceInfo.connection||deviceInfo.mozConnection||deviceInfo.webkitConnection||null;
+ const memory=Number(deviceInfo.deviceMemory||0);
+ const cores=Number(deviceInfo.hardwareConcurrency||0);
+ const isConstrained=Boolean(connection&&connection.saveData)||(memory>0&&memory<=4)||(cores>0&&cores<=4);
+ const limit=isMobile?(isConstrained?14:20):(isTablet?(isConstrained?26:34):(isConstrained?40:52));
  const displayPts=pts.length>limit?Array.from({length:limit},(_,i)=>pts[Math.round(i*(pts.length-1)/(limit-1))]):pts;
  const colors=palette[id]||palette.default;
  // Each occasion has its own flight rhythm: the lights launch from a wider or tighter
@@ -259,7 +266,7 @@ function renderOccasionDroneShow(id){
  };
  const baseFlight=flightProfiles[id]||{mode:'spark',radius:96,stagger:.046,duration:1.9,pulse:2.4,rotation:-90,overshoot:1.16,direction:1,ease:'cubic-bezier(.18,.82,.2,1)'};
  // Small screens use a shorter, softer arrival while retaining each occasion's unique formation.
- const flight=isMobile?{...baseFlight,radius:Math.min(88,Math.max(48,baseFlight.radius*.62)),stagger:Math.min(.026,baseFlight.stagger*.42),duration:Math.min(1.55,Math.max(1.18,baseFlight.duration*.72)),pulse:Math.min(3.4,Math.max(2.7,baseFlight.pulse*1.28)),overshoot:1.07}:baseFlight;
+ const flight=(isMobile||isConstrained)?{...baseFlight,radius:Math.min(isMobile?88:112,Math.max(48,baseFlight.radius*(isMobile?.62:.78))),stagger:Math.min(isMobile?.026:.032,baseFlight.stagger*(isMobile?.42:.62)),duration:Math.min(isMobile?1.55:1.8,Math.max(1.18,baseFlight.duration*(isMobile?.72:.84))),pulse:Math.min(4.2,Math.max(3.1,baseFlight.pulse*1.28)),overshoot:1.07}:baseFlight;
  const drones=displayPts.map((p,i)=>{
   const color=p.band==='saffron'? '#ff9933':p.band==='white'?'#ffffff':p.band==='green'?'#138808':p.band==='chakra'?'#4b78bb':colors[i%colors.length];
   const angle=i*2.399963229728653+flight.rotation*Math.PI/180;
@@ -267,7 +274,7 @@ function renderOccasionDroneShow(id){
   const offsetX=(Math.cos(angle)*radius*flight.direction).toFixed(1);
   const offsetY=(Math.sin(angle)*radius*.72).toFixed(1);
   const delay=((i%12)*flight.stagger+Math.floor(i/12)*.095).toFixed(2);
-  return `<g class="drone-unit" style="--drone-delay:${delay}s;--drone-offset-x:${offsetX}px;--drone-offset-y:${offsetY}px;--drone-color:${color};--drone-animation:drone-${id}-enter;--drone-duration:${flight.duration}s;--drone-pulse-duration:${flight.pulse}s;--drone-rotation:${flight.rotation}deg;--drone-overshoot:${flight.overshoot};--drone-ease:${flight.ease}"><circle class="drone-halo" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="9"/><circle class="drone-light" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4.2"/></g>`;
+  return `<g class="drone-unit" style="--drone-delay:${delay}s;--drone-offset-x:${offsetX}px;--drone-offset-y:${offsetY}px;--drone-color:${color};--drone-animation:drone-${id}-enter;--drone-duration:${flight.duration}s;--drone-pulse-duration:${flight.pulse}s;--drone-rotation:${flight.rotation}deg;--drone-overshoot:${flight.overshoot};--drone-ease:${flight.ease}"><circle class="drone-halo" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="10.5"/><circle class="drone-light" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4.2"/></g>`;
  }).join('');
  const labels={diwali:'Diwali',christmas:'Christmas',holi:'Holi',eid:'Eid',newyear:'New Year',birthday:'Birthday',wedding:'Wedding',anniversary:'Anniversary',valentine:'Valentine’s Day',rose:'Rose Day',propose:'Propose Day',rakhi:'Raksha Bandhan',chocolate:'Chocolate Day',teddy:'Teddy Day',promise:'Promise Day',hug:'Hug Day',kiss:'Kiss Day',pongal:'Pongal / Makar Sankranti',ganesh:'Ganesh Chaturthi',janmashtami:'Janmashtami',chhath:'Chhath Puja',baisakhi:'Baisakhi',buddha:'Buddha Purnima',navratri:'Navratri',dussehra:'Dussehra',republicday:'Republic Day',independenceday:'Independence Day',gandhijayanti:'Gandhi Jayanti',constitutionday:'Constitution Day',nationalunityday:'National Unity Day',nationalyouthday:'National Youth Day',votersday:'National Voters’ Day',scienceday:'National Science Day',technologyday:'National Technology Day',kargilvijaydiwas:'Kargil Vijay Diwas',sportsday:'National Sports Day',teachersday:'Teachers’ Day',hindidiwas:'Hindi Diwas',airforceday:'Indian Air Force Day',educationday:'International Education Day',childrensday:'Children’s Day',armyday:'Indian Army Day',navyday:'Indian Navy Day',ambedkarjayanti:'Ambedkar Jayanti',girlchildday:'National Girl Child Day'};
  const title=labels[id]||'Celebration';
@@ -282,14 +289,20 @@ function renderOccasionDroneShow(id){
   const viewportWidth=window.innerWidth||stage.getBoundingClientRect().width;
   const bucket=viewportWidth<=600?'mobile':viewportWidth<=1000?'tablet':'desktop';
   stage.dataset.droneBucket=bucket;
+  stage.dataset.dronePerformance=isConstrained?'lite':'full';
+  if(!stage.__droneVisibilityHandler && typeof document!=='undefined'){
+   stage.__droneVisibilityHandler=()=>stage.classList.toggle('is-document-hidden',document.visibilityState==='hidden');
+   document.addEventListener('visibilitychange',stage.__droneVisibilityHandler,{passive:true});
+   stage.__droneVisibilityHandler();
+  }
   if(!stage.__droneResizeHandler){
    stage.__droneResizeHandler=()=>{const width=window.innerWidth||stage.getBoundingClientRect().width;const next=width<=600?'mobile':width<=1000?'tablet':'desktop';if(next!==stage.dataset.droneBucket)renderOccasionDroneShow(stage.dataset.occasion||id);};
    window.addEventListener('resize',stage.__droneResizeHandler,{passive:true});
   }
   if(!stage.__droneVisibilityObserver && 'IntersectionObserver' in window){
    stage.__droneVisibilityObserver=new IntersectionObserver(entries=>{
-    for(const entry of entries)stage.classList.toggle('is-visible',entry.isIntersecting);
-   },{threshold:.05});
+    for(const entry of entries)stage.classList.toggle('is-visible',entry.isIntersecting && (typeof document==='undefined'||document.visibilityState!=='hidden'));
+   },{threshold:.05,rootMargin:'80px 0px'});
    stage.__droneVisibilityObserver.observe(stage);
   } else if(!('IntersectionObserver' in window)){stage.classList.add('is-visible');}
  }
