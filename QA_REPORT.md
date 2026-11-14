@@ -1,31 +1,51 @@
-# WishingASR v65.11 — QA Report
+# WishingASR v65.12 — Full-site QA Report
 
 Date: 2 November 2026
 
-## Work completed
+## Scope
 
-- Reduced the mobile home hero's vertical footprint, so visitors reach the primary message and actions sooner.
-- Improved the mobile hierarchy for the drone panel, eyebrow, headline, paragraph, paired CTAs, language note and feature ticker.
-- Reduced mobile header and hero glass blur/shadow intensity to limit unnecessary compositing work.
-- Phone drone effects now use a coordinated, short glide-in animation with lower point count (20 mobile / 34 tablet / 52 desktop), a shorter stagger and reduced light filters.
-- Preserved the 45 occasion-specific point formations, animation profile definitions, labels and resize behavior. On phones, formations remain occasion-specific while the arrival motion is deliberately calmer and consistent.
-- Kept IntersectionObserver-based off-screen pausing and prefers-reduced-motion behavior.
-- Updated all page asset tokens to `65.11`.
+Reviewed all 30 HTML pages and the shared stylesheet, plus page-specific inline styles. The optimization targets site-wide mobile behavior and the action controls shown in the supplied Android screenshots while preserving the existing feature set and premium visual direction.
 
-## Automated results
+## Issues found and fixed
 
-- `qa_static.py`: PASS — HTML semantics/accessibility, local links, unique SEO metadata/canonicals, sitemap coverage, JSON-LD, JS syntax, card/tool exports, saved-wish backup/restore, planner, drone profile, calendar and Vercel routing/security/cache checks.
-- `qa_security_static.py`: PASS — same-origin UI script, no executable inline scripts, button types, viewport/image checks, required security headers, immutable script cache.
-- 8 Node runtime suites: PASS — drones, shared site UI, calendar render, calendar data/annual rollover, growth helpers, tool core, tool exports, saved-wish/planner/invitation extras.
-- `qa_canvas_layout.cjs`: PASS — five export text/signature fit samples.
-- CSS parsing: PASS — 2,298 top-level nodes; zero parse errors.
-- Drone regression: PASS — 45 occasion IDs, 45 formations and choreography profiles; 20 mobile / 52 desktop points in the tested viewport sizes.
-- ZIP integrity: verified with `ZipFile.testzip()` after packaging.
+- The Tools page used flex-shrink sizing for 3–4 actions in one row. At common phone widths, controls collapsed to roughly 61–95 CSS pixels, causing labels such as “Copy message”, “Restore backup” and “Download invitation card” to wrap into narrow vertical stacks.
+- `.tool-card` inherited `overflow-wrap:anywhere`, which allowed button labels to split at arbitrary character boundaries.
+- Select-heavy form rows were cramped on narrow screens, especially the invitation theme and format controls.
+
+## Changes delivered
+
+- Applied word-boundary wrapping to buttons and action links throughout the site; long prose and URLs retain their existing wrapping behavior.
+- Standardized Tools page actions to a two-column grid, with a full-width final action for odd-numbered groups.
+- Switched Tools action groups to one column below 381 CSS pixels.
+- Set clear touch heights, centered labels, safe minimum widths and consistent gaps for tool actions.
+- Stacked select-heavy tool rows on narrow screens; retained side-by-side date/time rows when there is adequate space.
+- Added min-width containment for cards, form controls and nested content to reduce intrinsic-width layout issues.
+- Updated all 30 pages to request shared CSS/JS assets with cache version `65.12`.
+- Preserved the existing 45 occasion-specific drone formations, calendar data, exports, backups, invite maker, saved wishes, language options, SEO pages and existing business/product pages.
+
+## Responsive layout validation
+
+- 30 HTML pages measured at 320, 360, 390, 430, 768, 1024 and 1440 CSS-pixel widths.
+- Total: 210 page/viewport layout measurements.
+- No document-level horizontal overflow was detected at the tested widths.
+- The homepage occasion filter chips intentionally use a horizontally scrollable row; this does not increase document width.
+- Tools action group checks confirmed two columns at 390–768+ px and one column at 320–360 px. Buttons use `overflow-wrap: normal` and `word-break: normal`.
+- Captured and reviewed 390px layout previews for Home, Tools, Quotes, AA Group and Contact.
+- Chromium layout testing used embedded HTML/CSS via `page.set_content`; external network and local file navigation are restricted in this environment. JavaScript was removed for these static layout snapshots, so these screenshots validate CSS layout, not runtime animations or live interactions.
+
+## Automated regression results
+
+- `qa_static.py`: PASS — HTML semantics/accessibility, local links, unique SEO metadata/canonicals, sitemap coverage, JSON-LD, JavaScript syntax, export/backup/planner logic, drone profiles, calendar and Vercel routing/security/cache rules.
+- `qa_security_static.py`: PASS — 30 pages use the same-origin shared UI script; no executable inline scripts; explicit button types; viewport/image checks; security headers and immutable script caching.
+- 8 Node runtime suites: PASS — calendar data, calendar rendering, 45 drone profiles, growth/copy helpers, shared site UI, export/reminder helpers, backup/restore/planner/invitation exports and wish/caption generation flows.
+- `qa_canvas_layout.cjs`: PASS — all five tested export text/signature fit samples remain within safe width.
+- CSS parsing: PASS — 2,313 top-level nodes, zero parse errors.
+- Cache audit: PASS — all 30 HTML pages use asset version `65.12`.
 
 ## Verification boundaries
 
-The browser automation environment has previously blocked Chromium navigation, so this release does not claim fresh visual screenshots, Lighthouse scores, Core Web Vitals, real-device frame-rate or measured before/after load-time results. The supplied Android screenshot motivated the layout changes; final visual confirmation should be done on the deployed build on the user's phone.
+This is a source-package audit. It does not claim that the changes are already live on Vercel. Real Android/iOS device testing, browser-specific downloads/sharing, live AdSense verification, Lighthouse scores and Core Web Vitals still require post-deployment checks. The supplied screenshots guided the fixes; the measured viewport checks were performed in Chromium with static page markup/CSS.
 
 ## Deployment
 
-Upload the contents of this package's `wishingasr_work` directory to the existing Vercel project. The live site remains unchanged until deployment. After deploy, hard-refresh the Android browser once so it requests the `65.11` assets.
+Upload the contents of the `wishingasr_work` directory to the existing WishingASR Vercel project and redeploy. After publishing, hard-refresh the mobile browser so it fetches the `65.12` assets.

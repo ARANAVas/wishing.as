@@ -5049,3 +5049,141 @@ button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
   .hero.hero-cinematic .hero-art,.hero.hero-cinematic .hero-copy,.hero.hero-cinematic .feature-ticker{animation:none!important;transition:none!important}
   .drone-show-stage .drone-unit,.drone-show-stage .drone-light,.drone-show-stage .drone-halo{animation:none!important;will-change:auto!important}
 }
+
+
+/* v65.12 — site-wide responsive interaction and text-wrap correction.
+   Keep button labels readable; overflow-wrap:anywhere is reserved for prose/URLs. */
+button,
+.button,
+a.button,
+.small-button,
+.calendar-create-button,
+.wish-share-actions a,
+.wish-share-actions button{
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  hyphens:none!important;
+  max-width:100%;
+}
+
+/* Prevent nested grids and form controls from forcing page-width overflow. */
+.tool-card,.contact-card,.contact-form,.content-page,.legal,.national-page,
+.seo-wish-page,.aa-page,.site-footer,.founder-card,.wish-sample{min-width:0;box-sizing:border-box}
+.tool-card input,.tool-card select,.tool-card textarea,
+.contact-card input,.contact-card select,.contact-card textarea,
+.form-field input,.form-field select,.form-field textarea{max-width:100%;min-width:0;box-sizing:border-box}
+
+/* Tools use consistent two-column action groups instead of shrinking 3–4
+   buttons until every label breaks vertically. */
+.tool-card .tool-actions{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  align-items:stretch;
+  gap:10px;
+}
+.tool-card .tool-actions>*{
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%;
+  min-height:48px;
+  box-sizing:border-box;
+  flex:none!important;
+  padding:12px 10px;
+  text-align:center;
+  white-space:normal;
+  line-height:1.35;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  hyphens:none!important;
+}
+.tool-card .tool-actions>:only-child{grid-column:1/-1}
+.tool-card .tool-actions>:last-child:nth-child(odd):not(:only-child){grid-column:1/-1}
+.tool-card .tool-row>div{min-width:0}
+.tool-card .tool-row:has(select){grid-template-columns:repeat(2,minmax(0,1fr))}
+.tool-card .favorite-item{min-width:0;flex-wrap:wrap;overflow-wrap:anywhere}
+.tool-card .favorite-item p{min-width:0;flex:1 1 180px;overflow-wrap:anywhere}
+.tool-card .favorite-item .small-button{flex:0 0 auto}
+
+@media(max-width:560px){
+  .tool-card .tool-row:has(select){grid-template-columns:1fr}
+  .tool-card .tool-actions{gap:9px}
+  .tool-card .tool-actions>*{min-height:48px;padding:12px 9px;font-size:12px;letter-spacing:0}
+  .tool-card .tool-row>div>label{overflow-wrap:normal}
+  .tool-card select{font-size:16px!important;text-overflow:ellipsis}
+  .tool-card .tool-output{overflow-wrap:anywhere;word-break:normal}
+}
+@media(max-width:380px){
+  .tool-card .tool-actions{grid-template-columns:1fr!important}
+  .tool-card .tool-actions>:last-child:nth-child(odd):not(:only-child){grid-column:auto}
+  .tool-card .tool-row{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .tool-card,.tool-card *{scroll-behavior:auto!important}
+  .tool-card button,.tool-card a{transition:none!important}
+}
+
+
+/* v66 editorial polish: clearer hierarchy and calmer reading surfaces for occasion guides. */
+.wish-guide-intro{
+  position:relative;
+  overflow:hidden;
+  border-color:rgba(255,205,145,.19);
+  background:linear-gradient(112deg,rgba(22,34,57,.92),rgba(13,22,40,.82));
+  box-shadow:0 16px 38px rgba(0,0,0,.14),inset 0 1px rgba(255,255,255,.035);
+  padding-left:30px;
+}
+.wish-guide-intro::before{
+  content:"";position:absolute;left:0;top:18px;bottom:18px;width:3px;
+  border-radius:0 4px 4px 0;background:linear-gradient(180deg,#ffd092,#e7a6a8);
+}
+.wish-guide-intro h2{font-size:clamp(20px,2.1vw,25px);letter-spacing:-.025em}
+.wish-guide-intro p{max-width:800px;line-height:1.9}
+.wish-sample{transition:border-color .2s ease,background .2s ease,transform .2s ease}
+.wish-sample:focus-within{border-color:rgba(255,208,146,.42);background:rgba(255,255,255,.045)}
+.wish-faq summary:focus-visible,.related-wish-link:focus-visible,.wish-share-inline:focus-visible{
+  outline:2px solid #ffd092;outline-offset:3px;border-radius:8px
+}
+@media(max-width:560px){.wish-guide-intro{padding:18px 18px 18px 23px}.wish-guide-intro::before{top:15px;bottom:15px}}
+@media(prefers-reduced-motion:reduce){.wish-sample{transition:none}}
+
+
+/* v66.1 — final responsive safeguards for founder profiles and compact devices */
+.founders-grid,
+.founder-card,
+.founder-card > div { min-width: 0; max-width: 100%; }
+.founder-card > div { overflow-wrap: anywhere; }
+.founder-card h3,
+.founder-card p,
+.founder-card .text-link { max-width: 100%; overflow-wrap: anywhere; }
+.founder-portfolio { min-height: 44px; align-items: center; }
+@media (max-width: 720px) {
+  .site-header nav.open {
+    max-height: min(78svh, calc(100vh - 76px));
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .founders-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  .founder-card { grid-template-columns: var(--profile-size, 76px) minmax(0, 1fr); }
+  .founder-card > img {
+    width: var(--profile-size, 76px);
+    height: var(--profile-size, 76px);
+    min-width: 0;
+    min-height: 0;
+    object-fit: cover;
+  }
+}
+@media (max-width: 390px) {
+  .founder-card { gap: 10px; padding: 10px; }
+  .profile-chairman { --profile-size: 70px; }
+  .founder-card h3 { font-size: clamp(15px, 4.8vw, 19px); }
+  .founder-card p { font-size: 10px; line-height: 1.5; }
+}
+@media (max-width: 340px) {
+  .founder-card { grid-template-columns: 62px minmax(0, 1fr); }
+  .profile-chairman { --profile-size: 62px; }
+  .founder-card .text-link { font-size: 10px; }
+}

@@ -1,0 +1,15 @@
+WishingASR v66.1 deployment
+
+1. Download and extract WishingASR_v66_1_Final_Profile_Responsive.zip.
+2. Open the `wishingasr_work` folder.
+3. Replace the existing WishingASR project files with the contents of that folder. Keep the `assets` folder and all root files together.
+4. Commit/push to the branch connected to Vercel, or upload the folder contents using your existing deployment workflow.
+5. Wait for Vercel's deployment to finish, then open:
+   - https://wishingasr.vercel.app/
+   - https://wishingasr.vercel.app/about
+   - https://wishingasr.vercel.app/aa-group
+6. In each Aranav Sharma Chairman / Founder profile, select “View Portfolio”. It should open:
+   https://aranavas.github.io/Aranav-Digital-Portfolio/
+7. Test on a phone and desktop. Check the menu, profile card wrapping, greeting creator, downloads, sharing, calendar and tools.
+
+Do not upload the ZIP itself as the website root. Upload the extracted folder contents.

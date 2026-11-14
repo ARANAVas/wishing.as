@@ -1,1 +1,2 @@
-WishingASR v65 - Occasion Drone Light Show (Final Polish)
+WishingASR v66.1 - Chairman Profile Link & Responsive Polish
+Build optimization: 66.1 profile link, responsive card and mobile navigation safeguards

@@ -1,17 +1,24 @@
-# WishingASR v65.11 — Mobile Hero & Natural Motion Polish
+# WishingASR v65.12 — Full-site Responsive Optimization
 
-## Feedback addressed
-- Reduced the height and visual weight of the drone showcase on mobile so the greeting headline, description and actions appear sooner.
-- Tightened mobile hero spacing and reduced heavy glass blur/shadow effects in the header, drone panel, note and feature ticker.
-- Kept the two primary actions in a balanced, equal-width row and improved compact-screen typography and tap-target sizing.
-- Made mobile drone formations arrive with a shorter, coordinated, low-overshoot glide; reduced mobile drone count to 20 and removed expensive per-light filters on small screens.
-- Preserved the individual celebration formations and desktop/tablet occasion-specific animation profiles.
-- Retained off-screen animation pausing and added explicit reduced-motion behavior for the new mobile motion.
-- Bumped static asset cache version to 65.11.
+## Release highlights
 
-## Validation
-- Run the supplied static, security and Node runtime QA suites before release.
-- Browser-based visual/Lighthouse testing and real-device performance timing are not claimed in this package; verify on the deployed Android phone after deployment.
+- Full responsive pass across all 30 HTML pages and the shared stylesheet.
+- Fixed action-button text splitting and narrow 3–4 column button groups on the Tools page.
+- Reworked tool action controls into consistent two-column groups, with one-column fallback for very narrow phones.
+- Improved select-heavy forms, input containment, button label wrapping and touch sizing.
+- Updated CSS/JS cache version to 65.12 on every HTML page.
+- Preserved current product styling, page structure, SEO content, card exports, backup/restore, planner, calendar and drone features.
+
+## QA summary
+
+- 210 page/viewport measurements across 320, 360, 390, 430, 768, 1024 and 1440 CSS-pixel widths; zero document-level overflow findings.
+- HTML/static SEO/accessibility and security suites passed.
+- All 8 Node runtime regression suites passed.
+- Canvas text/signature layout tests passed.
+- CSS parser reported zero errors.
+
+See `QA_REPORT.md` for scope, test methodology and limitations.
 
 ## Deployment
-Upload the contents of this folder to the existing WishingASR Vercel project. The live website will not change until this build is deployed.
+
+This ZIP is a source release and does not deploy itself. Upload the contents of `wishingasr_work` to the existing Vercel project and redeploy. The live website will not change until deployment completes.
