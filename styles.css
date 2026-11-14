@@ -5189,7 +5189,7 @@ a.button,
 }
 
 
-/* V67 editorial clarity: consistent bylines and readable long-form guidance. */
+/* Editorial clarity: consistent bylines and readable long-form guidance. */
 .editorial-meta{display:flex;flex-wrap:wrap;align-items:center;gap:5px 9px;margin:10px 0 20px;color:var(--muted);font-size:12px;line-height:1.65}
 .editorial-meta a{color:var(--accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
 .editorial-meta a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
@@ -5200,7 +5200,7 @@ a.button,
 .legal li{color:var(--muted);font-size:14px;line-height:1.85}
 @media(max-width:480px){.editorial-meta{font-size:11px;gap:4px 7px}.editorial-specific{scroll-margin-top:74px}.legal{padding-inline:18px}}
 
-/* v67.1 — drone show smoothness, visual depth and device-aware rendering.
+/* Drone show smoothness, visual depth and device-aware rendering.
    Keep the formation entrance and a single light twinkle; avoid permanent GPU layers
    and multiple blur/drop-shadow filters on every SVG drone. */
 .drone-show-stage {
@@ -5329,4 +5329,133 @@ a.button,
   transform: translateY(-1px);
   background: color-mix(in srgb, var(--accent) 22%, transparent);
   border-color: var(--accent);
+}
+
+
+/* ==========================================================================
+   WishingASR v70.0 — Interactive Drone Formation Bar, Editorial Etiquette
+   Grids, and Quote Library Filter Polish
+   ========================================================================== */
+
+.drone-show-controls {
+  position: relative;
+  z-index: 9;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: min(100%, 690px);
+  margin: 12px auto 0;
+  padding: 8px 10px;
+  border-radius: 18px;
+  border: 1px solid rgba(215, 226, 255, 0.14);
+  background: linear-gradient(120deg, rgba(9, 17, 34, 0.88), rgba(18, 25, 46, 0.84));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+}
+
+.drone-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 34px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(215, 226, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  color: #d6e0f2;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.drone-chip:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  color: #ffffff;
+}
+
+.drone-chip.active {
+  background: color-mix(in srgb, var(--accent) 20%, rgba(16, 24, 44, 0.92));
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.drone-chip-next {
+  border-color: color-mix(in srgb, var(--accent) 36%, transparent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .drone-show-controls {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    padding: 8px;
+    border-radius: 15px;
+  }
+  .drone-chip {
+    flex: 0 0 auto;
+    min-height: 38px;
+    font-size: 11px;
+  }
+}
+
+/* Rich Editorial Etiquette Cards for Occasion & Language Guides */
+.etiquette-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 18px 0 8px;
+}
+
+.etiquette-box {
+  padding: 18px 20px;
+  border-radius: 17px;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, rgba(220, 228, 255, 0.12));
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.etiquette-box strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.etiquette-box p {
+  margin: 0 !important;
+  font-size: 13.5px !important;
+  line-height: 1.75 !important;
+}
+
+@media (max-width: 640px) {
+  .etiquette-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Quote Card Action Row Compatibility */
+.quote-grid > .quote-card .wish-sample-actions {
+  margin-top: auto;
+  padding-top: 8px;
+}
+.quote-grid > .quote-card .copy-wish {
+  min-height: 36px;
+  padding: 8px 13px;
+  font-size: 11px;
+  border-radius: 999px;
+}
+.quote-discovery {
+  margin: 0 auto 28px;
+  max-width: 100%;
 }

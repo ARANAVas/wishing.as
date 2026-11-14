@@ -10,7 +10,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent
-VERSION = '67.1'
+VERSION = '70.0'
 ROUTES = {
     '/create': '/index.html', '/quotes': '/quotes.html',
     '/national-days': '/national-days.html', '/blog': '/blog.html',
@@ -254,7 +254,7 @@ for slug in ('diwali-wishes', 'birthday-wishes', 'christmas-wishes', 'holi-wishe
         content=page.read_text(encoding='utf-8')
         for token in ('rel="canonical"','name="description"','property="og:title"','copy-wish','wish-share-inline','href="/create?occasion='):
             if token not in content: errors.append(f'{page.name}: missing guide feature {token}')
-if 'growth.js?v=67.1' not in (ROOT/'index.html').read_text(encoding='utf-8'):
+if 'growth.js?v=70.0' not in (ROOT/'index.html').read_text(encoding='utf-8'):
     errors.append('index.html: missing growth helper script')
 if '"@type":"Organization"' not in (ROOT/'index.html').read_text(encoding='utf-8') or 'AA Group' not in (ROOT/'index.html').read_text(encoding='utf-8'):
     errors.append('index.html: missing AA Group Organization structured data')
@@ -309,7 +309,7 @@ for slug in ('good-morning-wishes','good-night-wishes','love-messages','chhath-p
         for token in ('rel="canonical"','property="og:title"','name="twitter:card"','application/ld+json','copy-wish','wish-share-inline'):
             if token not in body: errors.append(f'{slug}.html: missing {token}')
 # The public release label and cache tokens must match the current release.
-if (ROOT/'VERSION.txt').read_text(encoding='utf-8').strip() != 'WishingASR v67.1 - Drone Show Performance & Visual Polish\nBuild optimization: adaptive drone budgets, reduced SVG filter/animation overhead, tab visibility pausing, starfield depth and responsive caption safeguards':
+if (ROOT/'VERSION.txt').read_text(encoding='utf-8').strip() != 'WishingASR v70.0 - Ultra-Luxury Editorial Redesign & AdSense Readiness\nBuild optimization: handcrafted-first wish engine, 20 bespoke card frames, interactive 45-formation drone show controls, occasion-wise guide themes, cultural etiquette matrices, and v70.0 cache refresh':
     errors.append('VERSION.txt: public release name changed unexpectedly')
 # Creator export formats and photo processing safety guardrails.
 app_source=(ROOT/'app.js').read_text(encoding='utf-8')

@@ -1,2 +1,2 @@
-WishingASR v67.1 - Drone Show Performance & Visual Polish
-Build optimization: adaptive drone budgets, reduced SVG filter/animation overhead, tab visibility pausing, starfield depth and responsive caption safeguards
+WishingASR v70.0 - Ultra-Luxury Editorial Redesign & AdSense Readiness
+Build optimization: handcrafted-first wish engine, 20 bespoke card frames, interactive 45-formation drone show controls, occasion-wise guide themes, cultural etiquette matrices, and v70.0 cache refresh
